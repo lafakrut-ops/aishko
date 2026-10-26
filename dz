@@ -1,0 +1,82 @@
+
+class BankAccount:
+    def __init__(self, owner, number, balance=0):
+        self.owner = owner
+        self.number = number
+        self.balance = balance
+
+
+class Bank:
+    def __init__(self):
+        self.accounts = []
+
+    def add_account(self, account):
+        self.accounts.append(account)
+
+    def show_accounts(self):
+        for account in self.accounts:
+            print("Власник:", account.owner)
+            print("Номер рахунку:", account.number)
+            print("Баланс:", account.balance)
+            
+
+    def deposit(self, number, amount):
+        for account in self.accounts:
+            if account.number == number:
+                if amount > 0:
+                    account.balance += amount
+                    print("Рахунок поповнено!")
+                else:
+                    print("Неправильна сума!")
+                return
+        print("Рахунок не знайдено!")
+
+    def withdraw(self, number, amount):
+        for account in self.accounts:
+            if account.number == number:
+                if amount > 0 and account.balance >= amount:
+                    account.balance -= amount
+                    print("Гроші знято!")
+                else:
+                    print("Недостатньо коштів або неправильна сума!")
+                return
+        print("Рахунок не знайдено!")
+
+    def transfer(self, from_number, to_number, amount):
+        from_account = None
+        to_account = None
+
+        for account in self.accounts:
+            if account.number == from_number:
+                from_account = account
+            if account.number == to_number:
+                to_account = account
+
+        if from_account is None or to_account is None:
+            print("Рахунок не знайдено!")
+        elif amount <= 0:
+            print("Неправильна сума!")
+        elif from_account.balance >= amount:
+            from_account.balance -= amount
+            to_account.balance += amount
+            print("Переказ виконано!")
+        else:
+            print("Недостатньо коштів!")
+
+
+bank = Bank()
+
+account1 = BankAccount("Ivan", "1001", 1000)
+account2 = BankAccount("Petro", "1002", 500)
+
+bank.add_account(account1)
+bank.add_account(account2)
+
+bank.show_accounts()
+
+bank.deposit("1001", 200)
+bank.withdraw("1002", 100)
+bank.transfer("1001", "1002", 300)
+
+print("Баланс після операцій:")
+bank.show_accounts()
