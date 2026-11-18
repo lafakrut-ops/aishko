@@ -5,4 +5,4 @@ cur = connection.cursor()
 cur.execute("DROP TABLE first_table;")
 connection.commit()
 connection.close()
-```[cite: 1]
+
